@@ -1,0 +1,64 @@
+"""
+VisionAIRecaptchaSolver - AI powered reCAPTCHA solver using YOLO object detection.
+
+This library provides both synchronous and asynchronous interfaces for solving
+reCAPTCHA challenges using YOLO-based image detection.
+"""
+
+from importlib.metadata import PackageNotFoundError, version
+
+from vision_ai_recaptcha_solver.async_solver import AsyncRecaptchaSolver
+from vision_ai_recaptcha_solver.config import SolverConfig
+from vision_ai_recaptcha_solver.exceptions import (
+    BrowserError,
+    CaptchaNotFoundError,
+    CaptchaTimeoutError,
+    DetectionError,
+    ElementNotFoundError,
+    ImageDownloadError,
+    LowConfidenceError,
+    ModelNotFoundError,
+    NavigationError,
+    RecaptchaSolverError,
+    SolverTimeoutError,
+    TokenExtractionError,
+    UnsupportedCaptchaError,
+)
+from vision_ai_recaptcha_solver.solver import RecaptchaSolver
+from vision_ai_recaptcha_solver.types import (
+    COCO_TARGET_MAPPINGS,
+    TARGET_MAPPINGS,
+    CaptchaType,
+    DetectionResult,
+    SolveResult,
+)
+
+try:
+    __version__ = version("vision-ai-recaptcha-solver")
+except PackageNotFoundError:
+    __version__ = "1.0.0"
+
+__all__ = [
+    "RecaptchaSolver",
+    "AsyncRecaptchaSolver",
+    "SolverConfig",
+    "SolveResult",
+    "DetectionResult",
+    "CaptchaType",
+    "TARGET_MAPPINGS",
+    "COCO_TARGET_MAPPINGS",
+    "RecaptchaSolverError",
+    "BrowserError",
+    "CaptchaNotFoundError",
+    "UnsupportedCaptchaError",
+    "DetectionError",
+    "TokenExtractionError",
+    "SolverTimeoutError",
+    "CaptchaTimeoutError",
+    "ModelNotFoundError",
+    "ImageDownloadError",
+    "LowConfidenceError",
+    "ElementNotFoundError",
+    "NavigationError",
+    "__version__",
+]
