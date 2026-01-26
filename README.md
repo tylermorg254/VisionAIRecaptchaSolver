@@ -14,6 +14,8 @@
 
 AI powered reCAPTCHA solver for reCAPTCHA v2 and v3 using YOLO based vision models (57k images dataset). The library provides both synchronous and asynchronous APIs, to automate image challenge solving and token extraction.
 
+https://github.com/user-attachments/assets/3d0de5bd-6bbd-4a1a-bb06-fd7efa9d55fd
+
 ## Key features
 
 - Supports reCAPTCHA v2 image challenges (3x3 selection, 3x3 dynamic, 4x4 square) and v3 invisible flows
