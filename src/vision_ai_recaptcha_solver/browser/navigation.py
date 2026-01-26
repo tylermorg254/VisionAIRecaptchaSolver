@@ -6,6 +6,11 @@ import logging
 import time
 from typing import Any
 
+try:
+    from DrissionPage.errors import ElementLostError
+except Exception:  # pragma: no cover
+    ElementLostError = RuntimeError
+
 from vision_ai_recaptcha_solver import constants as _constants
 from vision_ai_recaptcha_solver.exceptions import ElementNotFoundError
 
@@ -56,6 +61,9 @@ def get_checkbox_iframe(
         except AttributeError as e:
             logger.debug(f"get_checkbox_iframe: AttributeError - {e}")
             time.sleep(0.3)
+        except ElementLostError as e:
+            logger.debug(f"get_checkbox_iframe: ElementLostError - {e}")
+            time.sleep(0.3)
         except (RuntimeError, TimeoutError) as e:
             logger.debug(f"get_checkbox_iframe: Exception - {e}")
             time.sleep(0.3)
@@ -104,6 +112,9 @@ def get_challenge_iframe(
             time.sleep(0.1)
         except AttributeError as e:
             logger.debug(f"get_challenge_iframe: AttributeError - {e}")
+            time.sleep(0.5)
+        except ElementLostError as e:
+            logger.debug(f"get_challenge_iframe: ElementLostError - {e}")
             time.sleep(0.5)
         except (RuntimeError, TimeoutError) as e:
             logger.debug(f"get_challenge_iframe: Exception during search - {e}")
@@ -171,7 +182,7 @@ def click_verify_button(
     except AttributeError as e:
         logger.debug(f"click_verify_button: AttributeError - {e}")
         return False
-    except (RuntimeError, TimeoutError) as e:
+    except (RuntimeError, TimeoutError, ElementLostError) as e:
         logger.debug(f"click_verify_button: Exception - {e}")
         return False
 
@@ -215,7 +226,7 @@ def is_solved(
         solved = iframe.ele(SOLVED_CHECKBOX_SELECTOR, timeout=timeout)
         return solved is not None and bool(solved)
 
-    except (AttributeError, RuntimeError, TimeoutError):
+    except (AttributeError, RuntimeError, TimeoutError, ElementLostError):
         return False
 
 
@@ -244,7 +255,7 @@ def is_verify_button_disabled(
         disabled = button.attr("disabled")
         return disabled is not None
 
-    except (AttributeError, RuntimeError, TimeoutError):
+    except (AttributeError, RuntimeError, TimeoutError, ElementLostError):
         return True
 
 
@@ -320,7 +331,7 @@ def get_target_keyword(
     except AttributeError as e:
         logger.debug(f"get_target_keyword: AttributeError - {e}")
         return None
-    except (RuntimeError, TimeoutError) as e:
+    except (RuntimeError, TimeoutError, ElementLostError) as e:
         logger.debug(f"get_target_keyword: Exception - {e}")
         return None
 
@@ -358,7 +369,7 @@ def get_challenge_title(
     except AttributeError as e:
         logger.debug(f"get_challenge_title: AttributeError - {e}")
         return ""
-    except (RuntimeError, TimeoutError) as e:
+    except (RuntimeError, TimeoutError, ElementLostError) as e:
         logger.debug(f"get_challenge_title: Exception - {e}")
         return ""
 
@@ -419,7 +430,7 @@ def get_captcha_image_urls(
     except AttributeError as e:
         logger.debug(f"get_captcha_image_urls: AttributeError - {e}")
         return []
-    except (RuntimeError, TimeoutError) as e:
+    except (RuntimeError, TimeoutError, ElementLostError) as e:
         logger.debug(f"get_captcha_image_urls: Exception - {e}")
         return []
 
@@ -475,7 +486,7 @@ def click_tile(
     except AttributeError as e:
         logger.debug(f"click_tile: AttributeError - {e}")
         return False
-    except (RuntimeError, TimeoutError) as e:
+    except (RuntimeError, TimeoutError, ElementLostError) as e:
         logger.debug(f"click_tile: Exception - {e}")
         return False
 
