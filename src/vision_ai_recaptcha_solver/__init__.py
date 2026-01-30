@@ -26,6 +26,7 @@ from vision_ai_recaptcha_solver.exceptions import (
 )
 from vision_ai_recaptcha_solver.solver import RecaptchaSolver
 from vision_ai_recaptcha_solver.types import (
+    CLASS_NAMES,
     COCO_TARGET_MAPPINGS,
     TARGET_MAPPINGS,
     CaptchaType,
@@ -45,6 +46,7 @@ __all__ = [
     "SolveResult",
     "DetectionResult",
     "CaptchaType",
+    "CLASS_NAMES",
     "TARGET_MAPPINGS",
     "COCO_TARGET_MAPPINGS",
     "RecaptchaSolverError",
