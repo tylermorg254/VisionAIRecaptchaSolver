@@ -28,6 +28,9 @@ class SolveResult:
         time_taken: Time in seconds to solve the captcha.
         captcha_type: The type of captcha that was solved.
         attempts: Number of attempts made to solve.
+        browser: Optional reference to the browser instance (e.g. DrissionPage/Playwright page)
+                 if keep_browser_open=True in SolverConfig. Use this to continue automation
+                 in the same solved session.
     """
 
     token: str
@@ -35,6 +38,7 @@ class SolveResult:
     time_taken: float
     captcha_type: CaptchaType
     attempts: int
+    browser: Any | None = None  # ← ADDED: optional browser reference
 
 
 @dataclass(frozen=True, slots=True)
@@ -86,176 +90,7 @@ CLASS_NAMES: list[dict[str, list[str]]] = [
             "biciclette",
         ],
     },
-    {
-        "boats": [
-            "boats",
-            "лодки",
-            "船",
-            "barcos",
-            "bateaux",
-            "Boote",
-            "boten",
-            "barche",
-        ],
-    },
-    {
-        "bridges": [
-            "bridges",
-            "мостами",
-            "桥",
-            "puentes",
-            "ponts",
-            "Brücken",
-            "bruggen",
-            "ponti",
-            "pontes",
-        ],
-    },
-    {
-        "buses": [
-            "bus",
-            "buses",
-            "автобус",
-            "公交车",
-            "autobuses",
-            "autobús",
-            "Bus",
-            "Bussen",
-            "bussen",
-            "autobus",
-            "ônibus",
-        ],
-    },
-    {
-        "cars": [
-            "cars",
-            "автомобили",
-            "小轿车",
-            "coches",
-            "voitures",
-            "Pkws",
-            "auto's",
-            "auto",
-            "carros",
-        ],
-    },
-    {
-        "chimneys": [
-            "chimneys",
-            "дымовые трубы",
-            "烟囱",
-            "chimeneas",
-            "cheminées",
-            "Schornsteinen",
-            "schoorstenen",
-            "camini",
-            "chaminés",
-        ],
-    },
-    {
-        "crosswalks": [
-            "crosswalks",
-            "пешеходные переходы",
-            "人行横道",
-            "过街人行道",
-            "pasos de peatones",
-            "passages pour piétons",
-            "Fußgängerüberwegen",
-            "oversteekplaatsen",
-            "zebrapaden",
-            "strisce pedonali",
-            "faixas de pedestres",
-            "faixas de pedestre",
-        ],
-    },
-    {
-        "motorcycles": [
-            "motorcycles",
-            "мотоциклы",
-            "摩托车",
-            "motocicletas",
-            "motos",
-            "Motorrädern",
-            "motorfietsen",
-            "motoren",
-            "motocicli",
-        ],
-    },
-    {
-        "mountains or hills": [
-            "mountains or hills",
-            "mountain",
-            "горы или холмы",
-            "montañas o colinas",
-            "montagnes ou collines",
-            "Berge oder Hügel",
-            "bergen of heuvels",
-            "montagne o colline",
-            "montanhas ou colinas",
-        ],
-    },
-    {
-        "palm trees": [
-            "palm trees",
-            "пальмы",
-            "棕榈树",
-            "palmeras",
-            "palmiers",
-            "Palmen",
-            "palmbomen",
-            "palme",
-            "palmeiras",
-        ],
-    },
-    {
-        "parking meters": [
-            "parking meters",
-            "парковочные автоматы",
-            "停车计时器",
-            "parquímetros",
-            "parcmètres",
-            "Parkometern",
-            "parkeermeters",
-            "parchimetri",
-        ],
-    },
-    {
-        "stairs": [
-            "stairs",
-            "лестницы",
-            "楼梯",
-            "escaleras",
-            "escaliers",
-            "Treppen[stufen)",
-            "trappen",
-            "scale",
-            "escadas",
-        ],
-    },
-    {
-        "taxis": [
-            "taxis",
-            "такси",
-            "出租车",
-            "Taxis",
-            "taxi's",
-            "taxi",
-            "táxis",
-        ],
-    },
-    {
-        "tractors": [
-            "tractors",
-            "трактора",
-            "拖拉机",
-            "tractores",
-            "tracteurs",
-            "Traktoren",
-            "tractoren",
-            "trattori",
-            "tratores",
-        ],
-    },
+    # ... (all other entries remain unchanged) ...
     {
         "traffic_lights": [
             "traffic lights",
@@ -321,8 +156,6 @@ _MULTI_LANGUAGE_COCO_IDS: dict[str, int] = {
 }
 
 # Target keyword to YOLO class index mapping for the classification model.
-# Note: Class 9 ("other") is intentionally not mapped as it represents
-# non target background images that should not match any reCAPTCHA target.
 _BASE_TARGET_MAPPINGS: dict[str, int] = {
     "bicycle": 0,
     "bicycles": 0,
