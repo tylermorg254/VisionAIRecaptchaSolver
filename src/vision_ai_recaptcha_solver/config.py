@@ -63,6 +63,10 @@ class SolverConfig:
             signal handlers. Default is True.
         cleanup_tmp_on_close: Whether to delete the temporary download directory when
             close() is called. Default is True.
+        keep_browser_open: If True, keeps the browser session open after solve()
+            instead of closing it automatically. Allows reusing the same browser
+            instance (via result.browser or solver.browser) for further navigation.
+            Default: False (auto-closes for resource safety).
     """
 
     model_path: Path | str | None = None
@@ -97,6 +101,9 @@ class SolverConfig:
 
     # Cleanup
     cleanup_tmp_on_close: bool = True
+
+    # NEW: Flag to keep browser open after solve
+    keep_browser_open: bool = False
 
     _server_port_explicit: bool = field(init=False, repr=False, default=False)
     _download_dir_explicit: bool = field(init=False, repr=False, default=False)
